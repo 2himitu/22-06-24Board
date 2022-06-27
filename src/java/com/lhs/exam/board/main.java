@@ -8,6 +8,7 @@ public class main {
         System.out.println("== 계시판 v 0.1 ==" );
         System.out.println("== 프로그램 시작 ==" );
         String cmd;
+        int articlesLastId = 0 ;
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
@@ -17,9 +18,9 @@ public class main {
                 String title = sc.nextLine();
                 System.out.printf("내용 : ");
                 String body = sc.nextLine();
-                int id = 1;
+                int id = articlesLastId+1;
+                articlesLastId = id;
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n",id);
-
             }else{
                 System.out.printf("입력된 명령어 : %s\n",cmd);
             }
