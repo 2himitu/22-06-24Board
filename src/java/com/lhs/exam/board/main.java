@@ -38,8 +38,8 @@ public class main {
                     System.out.println("-------------------");
                     System.out.println(" 번호 / 제목 ");
                     System.out.println("-------------------");
-                    for (Article article : articleArrayList) {
-                        System.out.println(article.id + " / " + article.title);
+                    for (int i = articleArrayList.size()-1;i >= 0;i--) {
+                        System.out.println(articleArrayList.get(i).id + " / " + articleArrayList.get(i).title);
                     }
                 }
 
