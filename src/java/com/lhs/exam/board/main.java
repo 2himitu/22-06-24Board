@@ -20,11 +20,8 @@ public class main {
                 String body = sc.nextLine();
                 int id = articlesLastId+1;
                 articlesLastId = id;
-                Article article = new Article();
-                article.id = id;
-                article.title = title;
-                article.body = body;
-                System.out.println("새로운 Article객체 : "+article);
+                Article article = new Article(id,title,body);
+                System.out.println("새로운 Article객체 : "+article.toString());
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n",article.id);
             }else{
                 System.out.printf("입력된 명령어 : %s\n",cmd);
@@ -42,5 +39,16 @@ class Article {
     String title;
     String body;
 
+    Article(){}
 
+    Article(int id, String title, String body) {
+        this.id= id;
+        this.title= title;
+        this.body= body;
+    }
+
+    @Override
+    public String toString (){
+        return String.format("{id:%d, title: %s, body: %s}",id,title,body);
+    }
 }
