@@ -11,7 +11,20 @@ public class main {
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
-            System.out.printf("입력된 명령어 : %s\n",cmd);
+            if(cmd.equals("/usr/article/write")){
+                System.out.println("- 게시물등록 -");
+                System.out.printf("제목 : ");
+                String title = sc.nextLine();
+                System.out.printf("내용 : ");
+                String body = sc.nextLine();
+                int id = 1;
+                System.out.printf("%d번 계시물이 등록 되었습니다.\n",id);
+
+            }else{
+                System.out.printf("입력된 명령어 : %s\n",cmd);
+            }
+
+
         }
         while(!cmd.equals("exit"));
         System.out.println("== 프로그램 종료 ==" );
