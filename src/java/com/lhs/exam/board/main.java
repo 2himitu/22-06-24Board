@@ -9,6 +9,7 @@ public class main {
         System.out.println("== 프로그램 시작 ==" );
         String cmd;
         int articlesLastId = 0 ;
+        Article lastArticle = null;
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
@@ -21,8 +22,18 @@ public class main {
                 int id = articlesLastId+1;
                 articlesLastId = id;
                 Article article = new Article(id,title,body);
-                System.out.println("새로운 Article객체 : "+article.toString());
+                lastArticle = article;
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n",article.id);
+                System.out.printf("새로운 객체 : ",article.toString());
+            }else if(cmd.equals("/usr/article/detail")){
+                if(lastArticle==null){
+                    System.out.println("새로운 Article객체가 없습니다.");
+                }else{
+                    System.out.println("- 게시물상제보기 -");
+                    System.out.printf("번호 : %d\n",lastArticle.id);
+                    System.out.printf("제목 : %s\n",lastArticle.title);
+                    System.out.printf("내용 : %s\n",lastArticle.body);
+                }
             }else{
                 System.out.printf("입력된 명령어 : %s\n",cmd);
             }
@@ -49,6 +60,6 @@ class Article {
 
     @Override
     public String toString (){
-        return String.format("{id:%d, title: %s, body: %s}",id,title,body);
+        return String.format("{id:%d\n, title: %s\n, body: %s}\n",id,title,body);
     }
 }
