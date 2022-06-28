@@ -15,7 +15,6 @@ public class main {
         System.out.println("== 계시판 v 0.1 ==" );
         System.out.println("== 프로그램 시작 ==" );
         int articlesLastId = 0 ;
-        Article lastArticle = null;
         ArrayList<Article> articles = new ArrayList<>();
 
         makeTestData(articles);
@@ -38,12 +37,11 @@ public class main {
                 articlesLastId = id;
                 Article article = new Article(id, title, body);
                 articles.add(article);
-                lastArticle = article;
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
                 System.out.printf("새로운 객체 : %s\n", article.toString());
 
             }else if(cmd.equals("/usr/article/list")){
-                if(articles.size()==0){
+                if(articles.isEmpty()){
                     System.out.println("리스트에 아무것도 없습니다.");
                 }else{
                     System.out.println(" - 게시물 리스트 - ");
@@ -56,10 +54,10 @@ public class main {
                 }
 
             }else if(cmd.equals("/usr/article/detail")){
-                if(lastArticle==null){
+                if(articles.isEmpty()){
                     System.out.println("게시물이 없습니다.");
                 }else{
-                    Article article = lastArticle;
+                    Article article = articles.get(articles.size()-1);
                     System.out.println("- 게시물상제보기 -");
                     System.out.printf("번호 : %d\n",article.id);
                     System.out.printf("제목 : %s\n",article.title);
