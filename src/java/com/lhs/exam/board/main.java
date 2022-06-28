@@ -1,18 +1,30 @@
 package com.lhs.exam.board;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class main {
+    static void makeTestData(ArrayList<Article> article){
+        article.add(new Article(1,"제목1","내용1"));
+        article.add(new Article(2,"제목2","내용2"));
+        article.add(new Article(3,"제목3","내용3"));
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("== 계시판 v 0.1 ==" );
         System.out.println("== 프로그램 시작 ==" );
-        String cmd;
         int articlesLastId = 0 ;
         Article lastArticle = null;
-        ArrayList<Article> articleArrayList = new ArrayList<>();
+        ArrayList<Article> articles = new ArrayList<>();
+
+        makeTestData(articles);
+        if(articles.size()>0){
+            articlesLastId = articles.get(articles.size()-1).id;
+        }
+
+
+        String cmd;
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
@@ -25,21 +37,21 @@ public class main {
                 int id = articlesLastId + 1;
                 articlesLastId = id;
                 Article article = new Article(id, title, body);
-                articleArrayList.add(article);
+                articles.add(article);
                 lastArticle = article;
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
                 System.out.printf("새로운 객체 : %s\n", article.toString());
 
             }else if(cmd.equals("/usr/article/list")){
-                if(articleArrayList.size()==0){
+                if(articles.size()==0){
                     System.out.println("리스트에 아무것도 없습니다.");
                 }else{
                     System.out.println(" - 게시물 리스트 - ");
                     System.out.println("-------------------");
                     System.out.println(" 번호 / 제목 ");
                     System.out.println("-------------------");
-                    for (int i = articleArrayList.size()-1;i >= 0;i--) {
-                        System.out.println(articleArrayList.get(i).id + " / " + articleArrayList.get(i).title);
+                    for (int i = articles.size()-1;i >= 0;i--) {
+                        System.out.println(articles.get(i).id + " / " + articles.get(i).title);
                     }
                 }
 
