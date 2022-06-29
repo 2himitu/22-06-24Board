@@ -61,10 +61,12 @@ public class main {
                 }
 
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
-                if(articles.isEmpty()){
+                int id = Integer.parseInt(rq.getParams().get("id"));
+                if(id> articles.size()){
                     System.out.println("게시물이 없습니다.");
+                    continue;
                 }else{
-                    Article article = articles.get(articles.size()-1);
+                    Article article = articles.get(id-1);
                     System.out.println("- 게시물상제보기 -");
                     System.out.printf("번호 : %d\n",article.id);
                     System.out.printf("제목 : %s\n",article.title);
