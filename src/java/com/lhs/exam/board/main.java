@@ -61,7 +61,19 @@ public class main {
                 }
 
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
-                int id = Integer.parseInt(rq.getParams().get("id"));
+                if(rq.getParams().containsKey("id")==false){
+                    System.out.println("아이디를 입력 해주세요");
+                    continue;
+                }
+                int id=0;
+
+                try {
+                    id = Integer.parseInt(rq.getParams().get("id"));
+                }catch (NumberFormatException e){
+                    System.out.println("아이디를 양의 정수로 입력 해주세요");
+                    continue;
+                }
+
                 if(id> articles.size()){
                     System.out.println("게시물이 없습니다.");
                     continue;
@@ -145,7 +157,7 @@ class Util {
             if (bits.length == 1) {
                 continue;
             }
-            params.put(bits[0], bits[1]);
+            params.put(bits[0].trim(), bits[1].trim());
         }
 
         return params;
