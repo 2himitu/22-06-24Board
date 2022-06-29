@@ -1,6 +1,8 @@
 package com.lhs.exam.board;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class main {
@@ -24,10 +26,15 @@ public class main {
 
 
         String cmd;
+        Rq  rq;
+
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
-            if(cmd.equals("/usr/article/write")) {
+
+            rq = new Rq(cmd);
+
+            if(rq.getUrlPath().equals("/usr/article/write")) {
                 System.out.println("- 게시물등록 -");
                 System.out.printf("제목 : ");
                 String title = sc.nextLine();
@@ -40,7 +47,7 @@ public class main {
                 System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
                 System.out.printf("새로운 객체 : %s\n", article.toString());
 
-            }else if(cmd.equals("/usr/article/list")){
+            }else if(rq.getUrlPath().equals("/usr/article/list")){
                 if(articles.isEmpty()){
                     System.out.println("리스트에 아무것도 없습니다.");
                 }else{
@@ -53,7 +60,7 @@ public class main {
                     }
                 }
 
-            }else if(cmd.equals("/usr/article/detail")){
+            }else if(rq.getUrlPath().equals("/usr/article/detail")){
                 if(articles.isEmpty()){
                     System.out.println("게시물이 없습니다.");
                 }else{
@@ -70,11 +77,13 @@ public class main {
 
 
         }
-        while(!cmd.equals("exit"));
+        while(!rq.getUrlPath().equals("exit"));
         System.out.println("== 프로그램 종료 ==" );
         sc.close();
     }
 }
+
+
 class Article {
     int id ;
     String title;
@@ -87,9 +96,60 @@ class Article {
         this.title= title;
         this.body= body;
     }
-
     @Override
     public String toString (){
         return String.format("\n{id:%d\n, title: %s\n, body: %s}\n",id,title,body);
+    }
+}
+
+class Rq {
+    private String url;
+    private String urlPath;
+    private Map<String, String> params;
+
+    // 필드추가가능
+
+    // 수정가능
+    Rq(String url) {
+        this.url = url;
+        urlPath = Util.getUrlPathFromUrl(this.url);
+        params = Util.getParamsFromUrl(this.url);
+    }
+
+    // 수정가능, if문 금지
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    // 수정가능, if문 금지
+    public String getUrlPath() {
+        return urlPath;
+    }
+}
+
+// 수정불가능
+class Util {
+    static Map<String, String> getParamsFromUrl(String url) {
+        Map<String, String> params = new HashMap<>();
+        String[] urlBits = url.split("\\?", 2);
+
+        if (urlBits.length == 1) {
+            return params;
+        }
+
+        String queryStr = urlBits[1];
+        for (String bit : queryStr.split("&")) {
+            String[] bits = bit.split("=", 2);
+            if (bits.length == 1) {
+                continue;
+            }
+            params.put(bits[0], bits[1]);
+        }
+
+        return params;
+    }
+
+    static String getUrlPathFromUrl(String url) {
+        return url.split("\\?", 2)[0];
     }
 }
