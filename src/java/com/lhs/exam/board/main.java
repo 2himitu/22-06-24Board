@@ -1,9 +1,6 @@
 package com.lhs.exam.board;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class main {
     static void makeTestData(ArrayList<Article> article){
@@ -55,11 +52,21 @@ public class main {
                     System.out.println("-------------------");
                     System.out.println(" 번호 / 제목 ");
                     System.out.println("-------------------");
-                    for (int i = articles.size()-1;i >= 0;i--) {
-                        System.out.println(articles.get(i).id + " / " + articles.get(i).title);
+
+                    boolean OrderByIdDesc = true;
+                    if(rq.getParams().containsKey("orderBy")&&rq.getParams().get("orderBy").equals("idAsc")){
+                        OrderByIdDesc = false;
+                    }
+                    if(OrderByIdDesc){
+                        for (int i = articles.size()-1;i >= 0;i--) {
+                            System.out.println(articles.get(i).id + " / " + articles.get(i).title);
+                        }
+                    }else{
+                        for (Article article : articles) {
+                            System.out.println(article.id + " / " + article.title);
+                        }
                     }
                 }
-
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
                 if(rq.getParams().containsKey("id")==false){
                     System.out.println("아이디를 입력 해주세요");
