@@ -47,25 +47,24 @@ public class main {
             }else if(rq.getUrlPath().equals("/usr/article/list")){
                 if(articles.isEmpty()){
                     System.out.println("리스트에 아무것도 없습니다.");
-                }else{
+                }else {
                     System.out.println(" - 게시물 리스트 - ");
                     System.out.println("-------------------");
                     System.out.println(" 번호 / 제목 ");
                     System.out.println("-------------------");
 
                     boolean OrderByIdDesc = true;
-                    if(rq.getParams().containsKey("orderBy")&&rq.getParams().get("orderBy").equals("idAsc")){
+                    List<Article> sortedArticles = articles;
+                    if (rq.getParams().containsKey("orderBy") && rq.getParams().get("orderBy").equals("idAsc")) {
                         OrderByIdDesc = false;
                     }
-                    if(OrderByIdDesc){
-                        for (int i = articles.size()-1;i >= 0;i--) {
-                            System.out.println(articles.get(i).id + " / " + articles.get(i).title);
-                        }
-                    }else{
-                        for (Article article : articles) {
-                            System.out.println(article.id + " / " + article.title);
-                        }
+                    if (OrderByIdDesc) {
+                        sortedArticles = Util.reverseList(sortedArticles);
                     }
+                    for (Article article : sortedArticles) {
+                        System.out.println(article.id + " / " + article.title);
+                    }
+
                 }
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
                 if(rq.getParams().containsKey("id")==false){
@@ -150,6 +149,15 @@ class Rq {
 
 // 수정불가능
 class Util {
+    // 이 함수는 원본리스트를 훼손하지 않고, 새 리스트를 만듭니다. 즉 정렬이 반대인 복사본리스트를 만들어서 반환합니다.
+    public static <T> List<T> reverseList(List<T> list) {
+        List<T> reverse = new ArrayList<>(list.size());
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            reverse.add(list.get(i));
+        }
+        return reverse;
+    }
     static Map<String, String> getParamsFromUrl(String url) {
         Map<String, String> params = new HashMap<>();
         String[] urlBits = url.split("\\?", 2);
