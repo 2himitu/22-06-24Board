@@ -45,42 +45,9 @@ public class main {
                 System.out.printf("새로운 객체 : %s\n", article.toString());
 
             }else if(rq.getUrlPath().equals("/usr/article/list")){
-                if(articles.isEmpty()){
-                    System.out.println("리스트에 아무것도 없습니다.");
-                }else {
-                    System.out.println(" - 게시물 리스트 - ");
-                    System.out.println("-------------------");
-                    System.out.println(" 번호 / 제목 ");
-                    System.out.println("-------------------");
 
-                    List<Article> filteredArticles = articles;
+                actionUsrArticleList(articles,rq);
 
-                    if(rq.getParams().containsKey("searchKeyword")){
-                        String searchKeyword = rq.getParams().get("searchKeyword");
-                        filteredArticles = new ArrayList<>();
-                        for(Article article : articles){
-                            boolean mathed = article.title.contains(searchKeyword) ||article.body.contains(searchKeyword) ;
-                            if(mathed){
-                                filteredArticles.add(article);
-                            }
-
-                        }
-                    }
-
-
-                    List<Article> sortedArticles = filteredArticles;
-                    boolean OrderByIdDesc = true;
-                    if (rq.getParams().containsKey("orderBy") && rq.getParams().get("orderBy").equals("idAsc")) {
-                        OrderByIdDesc = false;
-                    }
-                    if (OrderByIdDesc) {
-                        sortedArticles = Util.reverseList(sortedArticles);
-                    }
-                    for (Article article : sortedArticles) {
-                        System.out.println(article.id + " / " + article.title);
-                    }
-
-                }
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
                 if(rq.getParams().containsKey("id")==false){
                     System.out.println("아이디를 입력 해주세요");
@@ -115,6 +82,45 @@ public class main {
         while(!rq.getUrlPath().equals("exit"));
         System.out.println("== 프로그램 종료 ==" );
         sc.close();
+    }
+
+    private static void actionUsrArticleList(ArrayList<Article> articles,Rq rq) {
+        if(articles.isEmpty()){
+            System.out.println("리스트에 아무것도 없습니다.");
+        }else {
+            System.out.println(" - 게시물 리스트 - ");
+            System.out.println("-------------------");
+            System.out.println(" 번호 / 제목 ");
+            System.out.println("-------------------");
+
+            List<Article> filteredArticles = articles;
+
+            if(rq.getParams().containsKey("searchKeyword")){
+                String searchKeyword = rq.getParams().get("searchKeyword");
+                filteredArticles = new ArrayList<>();
+                for(Article article : articles){
+                    boolean mathed = article.title.contains(searchKeyword) ||article.body.contains(searchKeyword) ;
+                    if(mathed){
+                        filteredArticles.add(article);
+                    }
+
+                }
+            }
+
+
+            List<Article> sortedArticles = filteredArticles;
+            boolean OrderByIdDesc = true;
+            if (rq.getParams().containsKey("orderBy") && rq.getParams().get("orderBy").equals("idAsc")) {
+                OrderByIdDesc = false;
+            }
+            if (OrderByIdDesc) {
+                sortedArticles = Util.reverseList(sortedArticles);
+            }
+            for (Article article : sortedArticles) {
+                System.out.println(article.id + " / " + article.title);
+            }
+
+        }
     }
 }
 
