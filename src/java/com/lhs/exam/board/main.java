@@ -3,6 +3,8 @@ package com.lhs.exam.board;
 import java.util.*;
 
 public class main {
+    static int articlesLastId = 0 ;
+    static ArrayList<Article> articles = new ArrayList<>();;
     static void makeTestData(ArrayList<Article> article){
         for(int i = 1 ; i <= 100 ; i ++){
             article.add(new Article(i,"제목"+i,"내용"+i));
@@ -13,8 +15,7 @@ public class main {
         Scanner sc = new Scanner(System.in);
         System.out.println("== 계시판 v 0.1 ==" );
         System.out.println("== 프로그램 시작 ==" );
-        int articlesLastId = 0 ;
-        ArrayList<Article> articles = new ArrayList<>();
+
 
         makeTestData(articles);
         if(articles.size()>0){
@@ -24,49 +25,44 @@ public class main {
 
         String cmd;
         Rq  rq;
-
         do {
             System.out.printf("명령) " );
             cmd = sc.nextLine();
-
             rq = new Rq(cmd);
 
             if(rq.getUrlPath().equals("/usr/article/write")) {
-                actionUsrArticleWrite(sc,articlesLastId,articles);
-                articlesLastId++;
+                actionUsrArticleWrite(sc);
 
             }else if(rq.getUrlPath().equals("/usr/article/list")){
-
-                actionUsrArticleList(articles,rq);
+                actionUsrArticleList(rq);
 
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
-                actionUsrArticleDetail(articles,rq);
+                actionUsrArticleDetail(rq);
 
             }else{
                 System.out.printf("입력된 명령어 : %s\n",cmd);
             }
-
-
         }
         while(!rq.getUrlPath().equals("exit"));
         System.out.println("== 프로그램 종료 ==" );
         sc.close();
     }
 
-    private static void actionUsrArticleWrite(Scanner sc,int articlesLastId,ArrayList<Article> articles) {
+    private static void actionUsrArticleWrite(Scanner sc) {
         System.out.println("- 게시물등록 -");
         System.out.printf("제목 : ");
         String title = sc.nextLine();
         System.out.printf("내용 : ");
         String body = sc.nextLine();
         int id = articlesLastId + 1;
+        articlesLastId = id;
         Article article = new Article(id, title, body);
         articles.add(article);
         System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
         System.out.printf("새로운 객체 : %s\n", article.toString());
     }
 
-    private static void actionUsrArticleDetail(ArrayList<Article> articles,Rq rq) {
+    private static void actionUsrArticleDetail(Rq  rq) {
         if(rq.getParams().containsKey("id")==false){
             System.out.println("아이디를 입력 해주세요");
             return;
@@ -92,7 +88,7 @@ public class main {
         }
     }
 
-    private static void actionUsrArticleList(ArrayList<Article> articles,Rq rq) {
+    private static void actionUsrArticleList(Rq  rq) {
         if(articles.isEmpty()){
             System.out.println("리스트에 아무것도 없습니다.");
         }else {
