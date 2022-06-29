@@ -53,8 +53,23 @@ public class main {
                     System.out.println(" 번호 / 제목 ");
                     System.out.println("-------------------");
 
+                    List<Article> filteredArticles = articles;
+
+                    if(rq.getParams().containsKey("searchKeyword")){
+                        String searchKeyword = rq.getParams().get("searchKeyword");
+                        filteredArticles = new ArrayList<>();
+                        for(Article article : articles){
+                            boolean mathed = article.title.contains(searchKeyword) ||article.body.contains(searchKeyword) ;
+                            if(mathed){
+                                filteredArticles.add(article);
+                            }
+
+                        }
+                    }
+
+
+                    List<Article> sortedArticles = filteredArticles;
                     boolean OrderByIdDesc = true;
-                    List<Article> sortedArticles = articles;
                     if (rq.getParams().containsKey("orderBy") && rq.getParams().get("orderBy").equals("idAsc")) {
                         OrderByIdDesc = false;
                     }
