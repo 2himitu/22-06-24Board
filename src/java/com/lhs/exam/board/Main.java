@@ -3,8 +3,13 @@ package com.lhs.exam.board;
 import java.util.*;
 
 public class Main {
-    static int articlesLastId = 0 ;
-    static ArrayList<Article> articles = new ArrayList<>();;
+    static int articlesLastId ;
+    static ArrayList<Article> articles ;
+
+    static {
+        articlesLastId = 0 ;
+        articles = new ArrayList<>();
+    }
     static void makeTestData(ArrayList<Article> article){
         for(int i = 1 ; i <= 100 ; i ++){
             article.add(new Article(i,"제목"+i,"내용"+i));
