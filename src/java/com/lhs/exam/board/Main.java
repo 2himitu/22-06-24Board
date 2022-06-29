@@ -12,7 +12,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = Container.sc;
         System.out.println("== 계시판 v 0.1 ==" );
         System.out.println("== 프로그램 시작 ==" );
 
@@ -31,7 +31,7 @@ public class Main {
             rq = new Rq(cmd);
 
             if(rq.getUrlPath().equals("/usr/article/write")) {
-                actionUsrArticleWrite(sc);
+                actionUsrArticleWrite();
 
             }else if(rq.getUrlPath().equals("/usr/article/list")){
                 actionUsrArticleList(rq);
@@ -48,12 +48,12 @@ public class Main {
         sc.close();
     }
 
-    private static void actionUsrArticleWrite(Scanner sc) {
+    private static void actionUsrArticleWrite() {
         System.out.println("- 게시물등록 -");
         System.out.printf("제목 : ");
-        String title = sc.nextLine();
+        String title = Container.sc.nextLine();
         System.out.printf("내용 : ");
-        String body = sc.nextLine();
+        String body = Container.sc.nextLine();
         int id = articlesLastId + 1;
         articlesLastId = id;
         Article article = new Article(id, title, body);
