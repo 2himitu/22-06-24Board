@@ -32,46 +32,15 @@ public class main {
             rq = new Rq(cmd);
 
             if(rq.getUrlPath().equals("/usr/article/write")) {
-                System.out.println("- 게시물등록 -");
-                System.out.printf("제목 : ");
-                String title = sc.nextLine();
-                System.out.printf("내용 : ");
-                String body = sc.nextLine();
-                int id = articlesLastId + 1;
-                articlesLastId = id;
-                Article article = new Article(id, title, body);
-                articles.add(article);
-                System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
-                System.out.printf("새로운 객체 : %s\n", article.toString());
+                actionUsrArticleWrite(sc,articlesLastId,articles);
+                articlesLastId++;
 
             }else if(rq.getUrlPath().equals("/usr/article/list")){
 
                 actionUsrArticleList(articles,rq);
 
             }else if(rq.getUrlPath().equals("/usr/article/detail")){
-                if(rq.getParams().containsKey("id")==false){
-                    System.out.println("아이디를 입력 해주세요");
-                    continue;
-                }
-                int id=0;
-
-                try {
-                    id = Integer.parseInt(rq.getParams().get("id"));
-                }catch (NumberFormatException e){
-                    System.out.println("아이디를 양의 정수로 입력 해주세요");
-                    continue;
-                }
-
-                if(id> articles.size()){
-                    System.out.println("게시물이 없습니다.");
-                    continue;
-                }else{
-                    Article article = articles.get(id-1);
-                    System.out.println("- 게시물상제보기 -");
-                    System.out.printf("번호 : %d\n",article.id);
-                    System.out.printf("제목 : %s\n",article.title);
-                    System.out.printf("내용 : %s\n",article.body);
-                }
+                actionUsrArticleDetail(articles,rq);
 
             }else{
                 System.out.printf("입력된 명령어 : %s\n",cmd);
@@ -82,6 +51,45 @@ public class main {
         while(!rq.getUrlPath().equals("exit"));
         System.out.println("== 프로그램 종료 ==" );
         sc.close();
+    }
+
+    private static void actionUsrArticleWrite(Scanner sc,int articlesLastId,ArrayList<Article> articles) {
+        System.out.println("- 게시물등록 -");
+        System.out.printf("제목 : ");
+        String title = sc.nextLine();
+        System.out.printf("내용 : ");
+        String body = sc.nextLine();
+        int id = articlesLastId + 1;
+        Article article = new Article(id, title, body);
+        articles.add(article);
+        System.out.printf("%d번 계시물이 등록 되었습니다.\n", article.id);
+        System.out.printf("새로운 객체 : %s\n", article.toString());
+    }
+
+    private static void actionUsrArticleDetail(ArrayList<Article> articles,Rq rq) {
+        if(rq.getParams().containsKey("id")==false){
+            System.out.println("아이디를 입력 해주세요");
+            return;
+        }
+        int id=0;
+
+        try {
+            id = Integer.parseInt(rq.getParams().get("id"));
+        }catch (NumberFormatException e){
+            System.out.println("아이디를 양의 정수로 입력 해주세요");
+            return;
+        }
+
+        if(id> articles.size()){
+            System.out.println("게시물이 없습니다.");
+            return;
+        }else{
+            Article article = articles.get(id-1);
+            System.out.println("- 게시물상제보기 -");
+            System.out.printf("번호 : %d\n",article.id);
+            System.out.printf("제목 : %s\n",article.title);
+            System.out.printf("내용 : %s\n",article.body);
+        }
     }
 
     private static void actionUsrArticleList(ArrayList<Article> articles,Rq rq) {
