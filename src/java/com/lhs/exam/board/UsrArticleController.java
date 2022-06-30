@@ -13,7 +13,6 @@ public class UsrArticleController {
         articlesLastId = 0 ;
         articles = new ArrayList<>();
         makeTestData();
-        makeTestData();
         if(articles.size()>0){
             articlesLastId = articles.get(articles.size()-1).id;
         }
@@ -40,16 +39,9 @@ public class UsrArticleController {
     }
 
     public void actionDetail(Rq  rq) {
-        if(rq.getParams().containsKey("id")==false){
+        int id = rq.getIntParam("id",0);
+        if(id==0){
             System.out.println("아이디를 입력 해주세요");
-            return;
-        }
-        int id=0;
-
-        try {
-            id = Integer.parseInt(rq.getParams().get("id"));
-        }catch (NumberFormatException e){
-            System.out.println("아이디를 양의 정수로 입력 해주세요");
             return;
         }
 
@@ -74,10 +66,10 @@ public class UsrArticleController {
             System.out.println(" 번호 / 제목 ");
             System.out.println("-------------------");
 
+            String searchKeyword = rq.getParam("searchKeyword",null);
             List<Article> filteredArticles = articles;
 
-            if(rq.getParams().containsKey("searchKeyword")){
-                String searchKeyword = rq.getParams().get("searchKeyword");
+            if(searchKeyword != null){
                 filteredArticles = new ArrayList<>();
                 for(Article article : articles){
                     boolean mathed = article.title.contains(searchKeyword) || article.body.contains(searchKeyword) ;
@@ -87,13 +79,10 @@ public class UsrArticleController {
 
                 }
             }
-
-
             List<Article> sortedArticles = filteredArticles;
-            boolean OrderByIdDesc = true;
-            if (rq.getParams().containsKey("orderBy") && rq.getParams().get("orderBy").equals("idAsc")) {
-                OrderByIdDesc = false;
-            }
+            String orderBy  = rq.getParam("orderBy","idDesc");
+            boolean OrderByIdDesc = orderBy.equals("idDesc");
+
             if (OrderByIdDesc) {
                 sortedArticles = Util.reverseList(sortedArticles);
             }
