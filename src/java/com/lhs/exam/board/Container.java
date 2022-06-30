@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 public class Container {
      static Scanner sc;
-     static{
+     static UsrArticleController usrArticleController;
+     static {
         sc = new Scanner(System.in);
+        usrArticleController = new UsrArticleController();
     }
 }
